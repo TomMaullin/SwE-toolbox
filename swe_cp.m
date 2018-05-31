@@ -24,6 +24,11 @@ if nargin == 0
     end
     return
 end
+% If this is a WB analysis we need to use swe_cp_WB.
+if isfield(SwE, 'WB')
+     swe_cp_WB(SwE);
+     return
+end
 %-Change to SwE.swd if specified
 %--------------------------------------------------------------------------
 try
@@ -1203,7 +1208,9 @@ end
 
 %-Save analysis parameters in SwE.mat file
 %--------------------------------------------------------------------------
-if spm_matlab_version_chk('7') >=0
+if exist('OCTAVE_VERSION','builtin')
+    save('SwE','SwE');
+elseif spm_matlab_version_chk('7') >=0
     save('SwE','SwE','-V6');
 else
     save('SwE','SwE');
